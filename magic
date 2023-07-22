@@ -1,9 +1,7 @@
 #!/usr/bin/env python
-
-
 import json
 import re
-from html2text import html2text as h2t
+import pypandoc
 
 content = {"a": []}
 
@@ -12,11 +10,11 @@ with open("stash.json", "r") as s:
 
 
 def convert(html):
-    return h2t(html)
+    return pypandoc.convert_text(html,format="html", to="gfm")
 
 
 def create_content(title, content):
-    filename = f"./web/h2w/_content/{title}.md"
+    filename = f"../wiki/_content/{title}.md"
     with open(filename, "w") as target:
         target.write(f"---\ntitle: {title}\n---\n")
         target.write(content)
