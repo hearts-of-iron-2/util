@@ -1,0 +1,34 @@
+#!/usr/bin/env python
+
+
+import json
+import re
+from html2text import html2text as h2t
+
+content = {"a": []}
+
+with open("stash.json", "r") as s:
+    content = json.loads(s.read())
+
+
+def convert(html):
+    return h2t(html)
+
+
+def create_content(title, content):
+    filename = f"./web/h2w/_content/{title}.md"
+    with open(filename, "w") as target:
+        target.write(f"---\ntitle: {title}\n---\n")
+        target.write(content)
+
+
+for a in content["a"]:
+    title = a["title"]
+    title = re.sub("[ /]", "_", title)
+    title = re.sub("'", "", title)
+    content = a["content"]
+    content = str.join(" ", content.splitlines())
+    content = re.sub('href="/(.*?)"', r'href="/wiki/\g<1>"', content)
+    content = re.sub(" +", " ", content)
+    md = convert(content)
+    create_content(title, md)
