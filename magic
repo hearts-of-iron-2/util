@@ -10,7 +10,7 @@ with open("stash.json", "r") as s:
 
 
 def convert(html):
-    return pypandoc.convert_text(html,format="html", to="gfm")
+    return pypandoc.convert_text(html, format="html", to="markdown")
 
 
 def create_content(title, content):
